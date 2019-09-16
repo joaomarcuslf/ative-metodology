@@ -23,7 +23,6 @@ function getGroups(array, max, balanceCount = 0) {
 
   while (shouldRunAgain) {
     for (let index = 0; index < groups.length; index++) {
-    
       if (decIndex < ascIndex) break;
 
       if (flow === 'dec') {
@@ -52,7 +51,6 @@ function getGroups(array, max, balanceCount = 0) {
 
     const isUnbalanced = (groups[bigger].rating - groups[lesser].rating) > 400;
 
-  
 
     if (isUnbalanced && balanceCount < 3) {
       groups = balanceGroups(groups, bigger, lesser, balanceCount);
@@ -65,14 +63,12 @@ function getGroups(array, max, balanceCount = 0) {
 }
 
 function balanceGroups(groupsRaw, biggerIndex, lesserIndex, balanceCount = 0) {
-
   const groups = groupsRaw;
 
   const bigger = groups[biggerIndex];
   const lesser = groups[lesserIndex];
 
   if (bigger.members.length <= lesser.members.length) {
-  
     const biggerPopped = bigger.members.pop();
     const lesserPopped = lesser.members.pop();
 
@@ -94,8 +90,7 @@ function balanceGroups(groupsRaw, biggerIndex, lesserIndex, balanceCount = 0) {
   }
 
 
-
-  const concatedArray = (lesser.members).concat(bigger.members);
+  const concatedArray = ((lesser.members).concat(bigger.members).sort((a, b) => a.rating - b.rating));
 
   const [biggerBalanced, lesserBalanced] = getGroups(concatedArray, 2, balanceCount + 1);
 
@@ -120,11 +115,8 @@ function getGroupNumber(rawArray) {
     }
 
     return magicNumber;
-  } else {
-    let magicNumber = parseInt((parseInt(len/10) * 5) / 4);
-
-    return magicNumber;
   }
+  return parseInt((parseInt(len / 10) * 5) / 4);
 }
 const arr = fs.readJsonSync('./data.json');
 
