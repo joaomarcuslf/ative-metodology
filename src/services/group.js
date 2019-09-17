@@ -1,3 +1,5 @@
+const logger = require("../../helpers/log.js");
+
 class GroupService {
   constructor(data = []) {
     this.raw = data;
@@ -61,6 +63,7 @@ class GroupService {
 
 
       if (isUnbalanced && balanceCount < 3) {
+        logger(`Is unbalanced ${groups[lesser].rating} ${groups[bigger].rating}`);
         groups = this.balanceGroups(groups, bigger, lesser, balanceCount);
       }
 
@@ -77,6 +80,8 @@ class GroupService {
     const lesser = groups[lesserIndex];
 
     if (bigger.members.length <= lesser.members.length) {
+      logger(`Balance strategy: Trade method ${balanceCount}, ${lesserIndex}, ${biggerIndex}`);
+
       const biggerPopped = bigger.members.pop();
       const lesserPopped = lesser.members.pop();
 
@@ -91,6 +96,8 @@ class GroupService {
 
       return groups;
     }
+
+    logger(`Balance strategy: Sort Method ${balanceCount}`);
 
 
     const concatedArray = (
