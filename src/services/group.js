@@ -63,7 +63,7 @@ class GroupService {
 
 
       if (isUnbalanced && balanceCount < 3) {
-        logger(`Is unbalanced ${groups[lesser].rating} ${groups[bigger].rating}`);
+        logger(`Is unbalanced lesrat:${groups[lesser].rating} bigrat:${groups[bigger].rating}`);
         groups = this.balanceGroups(groups, bigger, lesser, balanceCount);
       }
 
@@ -80,7 +80,9 @@ class GroupService {
     const lesser = groups[lesserIndex];
 
     if (bigger.members.length <= lesser.members.length) {
-      logger(`Balance strategy: Trade method ${balanceCount}, ${lesserIndex}, ${biggerIndex}`);
+      logger(`Balance strategy: Trade method blcnt:${balanceCount}, lssind:${lesserIndex}, bigind:${biggerIndex}`);
+
+      lesser.members = lesser.members.sort((a, b) => b.rating - a.rating);
 
       const biggerPopped = bigger.members.pop();
       const lesserPopped = lesser.members.pop();
@@ -94,10 +96,12 @@ class GroupService {
       groups[biggerIndex] = this.getMediumRating(groups[biggerIndex]);
       groups[lesserIndex] = this.getMediumRating(groups[lesserIndex]);
 
+      logger(`Balance strategy: Trade method lesrat:${groups[lesserIndex].rating} bigrat:${groups[biggerIndex].rating}`);
+
       return groups;
     }
 
-    logger(`Balance strategy: Sort Method ${balanceCount}`);
+    logger(`Balance strategy: Sort Method blcnt:${balanceCount}`);
 
 
     const concatedArray = (
