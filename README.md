@@ -1,8 +1,9 @@
 # ative-metodology
 
-## Project setup
+## Project setup and seeding data
 ```
 yarn install
+yarn run seed
 ```
 
 ### Run code
