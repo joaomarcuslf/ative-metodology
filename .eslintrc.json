@@ -17,6 +17,7 @@
     "rules": {
         "no-plusplus": "off",
         "radix": "off",
-        "no-loop-func": "off"
+        "no-loop-func": "off",
+        "class-methods-use-this": "off"
     }
 }
