@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "full:run": "yarn seed && yarn start",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "seed": "node data/seed.js"
