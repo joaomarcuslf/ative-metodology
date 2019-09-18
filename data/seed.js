@@ -1,8 +1,8 @@
 const fs = require('fs-extra');
-const logger = require("../helpers/log.js");
+const logger = require('../helpers/log.js');
 
 function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.abs(Math.random() * (parseInt(max) - parseInt(min))) + parseInt(min);
 }
 
 const arr = [];
@@ -24,8 +24,8 @@ for (let i = 0; i < length; i++) {
     rating: parseInt(getRandomArbitrary(minRate, maxRate)),
   });
 
-  if (i % 1000 === 0) {
-    logger('Backup writing');
+  if (i % 1000000 === 0) {
+    logger(`Backup writing on index: ${i}`);
     fs.writeFileSync('./data/data.json', JSON.stringify(arr));
   }
 }

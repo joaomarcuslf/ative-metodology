@@ -1,8 +1,8 @@
 const start = new Date();
 const hrstart = process.hrtime();
-const logger = require("../helpers/log.js");
-
 const fs = require('fs-extra');
+const logger = require('../helpers/log.js');
+
 
 const GroupServiceFactory = require('./services/group.js');
 
@@ -12,7 +12,7 @@ const ProcessedData = new GroupServiceFactory(arr);
 
 const groupsToPrint = ProcessedData.computed;
 
-fs.writeFileSync('./data/groups.json', JSON.stringify(groupsToPrint, null, 4));
+fs.writeFileSync('./data/groups.json', JSON.stringify(groupsToPrint.map(({ rating, members }) => ({ rating, members: members.length }), null, 4)));
 
 const end = new Date() - start;
 const hrend = process.hrtime(hrstart);
