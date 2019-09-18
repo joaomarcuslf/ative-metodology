@@ -1,4 +1,4 @@
-const logger = require("../../helpers/log.js");
+const logger = require('../../helpers/log.js');
 
 class GroupService {
   constructor(data = []) {
@@ -52,14 +52,9 @@ class GroupService {
 
       flow = flow === 'dec' ? 'asc' : 'dec';
 
-      const { bigger, lesser } = groups.reduce((acc, actual, index) => {
-        if (typeof acc.bigger === 'undefined' || groups[acc.bigger].rating < actual.rating) acc.bigger = index;
-        if (typeof acc.lesser === 'undefined' || groups[acc.lesser].rating > actual.rating) acc.lesser = index;
+      const { isUnbalanced, bigger, lesser } = this.checkBalanceRate(groups, 400);
 
-        return acc;
-      }, {});
-
-      const isUnbalanced = (groups[bigger].rating - groups[lesser].rating) > 400;
+      logger(`Running ${flow} ascInd:${ascIndex} decInd:${decIndex} lesrat:${groups[lesser].rating} bigrat:${groups[bigger].rating}`);
 
 
       if (isUnbalanced && balanceCount < 3) {
@@ -79,7 +74,7 @@ class GroupService {
     const bigger = groups[biggerIndex];
     const lesser = groups[lesserIndex];
 
-    if (bigger.members.length <= lesser.members.length) {
+    if (bigger.members.length === lesser.members.length) {
       logger(`Balance strategy: Trade method blcnt:${balanceCount}, lssind:${lesserIndex}, bigind:${biggerIndex}`);
 
       lesser.members = lesser.members.sort((a, b) => b.rating - a.rating);
@@ -115,7 +110,24 @@ class GroupService {
     groups[biggerIndex] = biggerBalanced;
     groups[lesserIndex] = lesserBalanced;
 
+    logger(`Balance strategy: Sort method lesrat:${groups[lesserIndex].rating} bigrat:${groups[biggerIndex].rating}`);
+
     return groups;
+  }
+
+  checkBalanceRate(groups, ratingRule) {
+    const { bigger, lesser } = groups.reduce((acc, actual, index) => {
+      if (typeof acc.bigger === 'undefined' || groups[acc.bigger].rating < actual.rating) acc.bigger = index;
+      if (typeof acc.lesser === 'undefined' || groups[acc.lesser].rating > actual.rating) acc.lesser = index;
+
+      return acc;
+    }, {});
+
+    return {
+      isUnbalanced: (groups[bigger].rating - groups[lesser].rating) > ratingRule,
+      bigger,
+      lesser,
+    };
   }
 
   getGroupNumber(rawArray) {
@@ -134,6 +146,7 @@ class GroupService {
 
       return magicNumber;
     }
+
     return parseInt((parseInt(len / 10) * 5) / 4);
   }
 
